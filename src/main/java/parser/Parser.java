@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 import static main.Main.path;
 
 public class Parser {
-    private List<Cart> getParseDataFromString(String str){
+    private List<Cart> getParseDataFromString(String str) throws Exception {
         List<Cart> carts = new ArrayList<>();
         String regex = "(NUMBER:)(\\d+)(FIRSTNAME:)(\\w+)(LASTNAME:)(\\w+)(CVV:)(\\d+)(DATE:)(\\d+.\\d+)";
         Pattern pattern = Pattern.compile(regex);
@@ -23,20 +23,27 @@ public class Parser {
                 String numberOfCard = mat.replaceAll("$1 $2 $3 $4");
                 carts.add(new Cart(numberOfCard, matcher.group(4), matcher.group(6), Integer.parseInt(matcher.group(8)), matcher.group(10)));
             }
+            else{
+                throw new Exception("The groups from REGEX do not match with string from class Parser.");
+            }
         }
         return carts;
     }
     public void print(){
         Reader reader = new Reader();
-        System.out.printf("%21s %19s %15s %11s %15s%n", "NUMBER OF CARD", "FIRSTNAME", "LASTNAME", "CVV", "MONTH/YEAR");
-        System.out.println("---------------------------------------------------------------------------------------");
-        getParseDataFromString(reader.getStringFromFile(path)).forEach(e ->
-                System.out.printf("| %-25s| %-15s| %-15s| %-10d| %-10s |%n",
-                        e.getNumberCart(),
-                        e.getFirstname(),
-                        e.getLastname(),
-                        e.getCvv(),
-                        e.getDate()));
-        System.out.println("---------------------------------------------------------------------------------------");
+        try {
+            System.out.printf("%21s %19s %15s %11s %15s%n", "NUMBER OF CARD", "FIRSTNAME", "LASTNAME", "CVV", "MONTH/YEAR");
+            System.out.println("---------------------------------------------------------------------------------------");
+            getParseDataFromString(reader.getStringFromFile(path)).forEach(e ->
+                    System.out.printf("| %-25s| %-15s| %-15s| %-10d| %-10s |%n",
+                            e.getNumberCart(),
+                            e.getFirstname(),
+                            e.getLastname(),
+                            e.getCvv(),
+                            e.getDate()));
+            System.out.println("---------------------------------------------------------------------------------------");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

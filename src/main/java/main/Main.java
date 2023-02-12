@@ -14,7 +14,11 @@ public class Main {
         Writer writer = new Writer();
         Parser parserFromFile = new Parser();
 
-        System.out.println(writer.writeToFile(dts.getStringFromList(g.getDataOfListCart()), path));
-        parserFromFile.print();
+        try {
+            System.out.println(writer.writeToFile(dts.getStringFromList(g.getDataOfListCart()), path));
+            parserFromFile.print();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

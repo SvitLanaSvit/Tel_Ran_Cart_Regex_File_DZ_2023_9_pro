@@ -4,7 +4,7 @@ import model.Cart;
 import savingDataToList.Data;
 
 public class DataToString {
-    public String getStringFromList(Data data){
+    public String getStringFromList(Data data) throws Exception {
         StringBuilder sb = new StringBuilder();
         if(!data.getList().isEmpty()){
             for (Cart cart : data.getList()) {
@@ -16,7 +16,7 @@ public class DataToString {
             }
         }
         else{
-            System.out.println("The list of carts is empty!!!");
+            throw new Exception("The list of carts is empty!!!");
         }
         return sb.toString();
     }
